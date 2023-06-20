@@ -1,0 +1,58 @@
+{% set name = "matflow" %}
+{% set version = "0.3.0a21" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://files.pythonhosted.org/packages/f6/93/44dd18ae2efc0c92379a5e810e07337c0b2d29adaf4e56d83b4c2b1ec8e4/matflow_new-0.3.0a21.tar.gz
+  sha256: 74e57d5134785bb4a3c8773231552727a513c25932968d12bdb9f787eed4ceb7
+
+build:
+  number: 0
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
+  entry_points:
+    - "hpcflow = hpcflow.cli:cli"
+
+requirements:
+  host:
+    - python >=3.8,<3.12
+    - poetry-core >=1.0.0
+    - pip
+  run:
+    - python >=3.8,<3.12
+    - hpcflow >=0.2.0,<0.2.1
+  run_constrained:
+    - pytest >=7.2.0,<8.0.0
+
+test:
+  imports:
+    - matflow
+  commands:
+    - pip check
+    - matflow --help
+  requires:
+    - pip
+
+about:
+  home: https://github.com/hpcflow/matflow-new
+  summary: 'Computational workflows for materials science.'
+  description: |
+    MatFlow is a framework for running reproducible workflows in materials science.
+    It is a python program that interacts with software (open-source and proprietary) used in materials science.
+    It is particularly suited for hybrid workflows (involving experimental data and computational work),
+    like for example HPC model calibration.
+    Outputs, together with details of the worflow, are automatically stored in an open source file format for post-processing,
+    which Matflow can automatically upload to data repositories like Zenodo.
+    It was developed using funding from the LightForm EPSRC programme grant (EP/R001715/1).
+
+  license: MIT
+  license_file: LICENSE.txt
+  doc_url: https://docs.matflow.io
+  dev_url: https://github.com/hpcflow/matflow-new
+
+extra:
+  recipe-maintainers:
+    - aplowman
